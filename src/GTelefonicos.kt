@@ -1,7 +1,4 @@
-// GTelefonicos.kt
-
-class GTelefonicos(val numCabinas: Int) {
-    // Lista de cabinas inicializada con la cantidad de cabinas especificada
+class GTelefonicos(numCabinas: Int) {
     private val cabinas: MutableList<Cabina> = MutableList(numCabinas) { Cabina(it + 1) }
 
     companion object {
@@ -14,7 +11,6 @@ class GTelefonicos(val numCabinas: Int) {
         require(numCabinas > 0) { "El número de cabinas debe ser mayor que cero." }
     }
 
-    // Clase interna para representar cada cabina
     private data class Cabina(val id: Int) {
         var llamadasLocales: Int = 0
         var minutosLocales: Int = 0
@@ -23,7 +19,6 @@ class GTelefonicos(val numCabinas: Int) {
         var llamadasCelulares: Int = 0
         var minutosCelulares: Int = 0
 
-        // Método para registrar una llamada en la cabina
         fun registrarLlamada(tipo: String, minutos: Int) {
             require(minutos > 0) { "La duración de la llamada debe ser mayor que cero." }
 
@@ -44,21 +39,23 @@ class GTelefonicos(val numCabinas: Int) {
             }
         }
 
-        // Método para mostrar la información de la cabina
         fun mostrarInfo(): String {
             val totalLlamadas = llamadasLocales + llamadasLargaDistancia + llamadasCelulares
             val totalMinutos = minutosLocales + minutosLargaDistancia + minutosCelulares
             val totalCosto = calcularCostoTotal()
 
             return """
-                |Cabina $id:
-                |Total de llamadas: $totalLlamadas
-                |Total de minutos: $totalMinutos
-                |Costo total: $totalCosto pesos
+               ╔══════════════════════════════════════╗
+               ║    Cabina $id:                       ║
+               ╠══════════════════════════════════════╣
+               ║ Total de llamadas: $totalLlamadas    ║
+               ║ Total de minutos: $totalMinutos      ║
+               ║ Costo total: $totalCosto pesos       ║
+               ╚══════════════════════════════════════╝
+                
             """.trimMargin()
         }
 
-        // Método para reiniciar los contadores de la cabina
         fun reiniciar() {
             llamadasLocales = 0
             minutosLocales = 0
@@ -68,14 +65,12 @@ class GTelefonicos(val numCabinas: Int) {
             minutosCelulares = 0
         }
 
-        // Método para calcular el costo total de las llamadas en la cabina
         fun calcularCostoTotal(): Int {
             return (minutosLocales * TARIFA_LOCAL) +
                     (minutosLargaDistancia * TARIFA_LARGA_DISTANCIA) +
                     (minutosCelulares * TARIFA_CELULAR)
         }
 
-        // Método para obtener un resumen de las estadísticas de la cabina
         fun obtenerResumen(): Triple<Int, Int, Int> {
             val totalLlamadas = llamadasLocales + llamadasLargaDistancia + llamadasCelulares
             val totalMinutos = minutosLocales + minutosLargaDistancia + minutosCelulares
@@ -84,48 +79,59 @@ class GTelefonicos(val numCabinas: Int) {
         }
     }
 
-    // Método para registrar una llamada en una cabina específica
     fun registrarLlamada(cabinaId: Int, tipo: String, minutos: Int) {
         val cabina = cabinas.getOrNull(cabinaId - 1)
             ?: throw IllegalArgumentException("ID de cabina no válido.")
         cabina.registrarLlamada(tipo, minutos)
     }
 
-    // Método para mostrar la información de una cabina específica
     fun mostrarInfoCabina(cabinaId: Int): String {
         val cabina = cabinas.getOrNull(cabinaId - 1)
             ?: throw IllegalArgumentException("ID de cabina no válido.")
         return cabina.mostrarInfo()
     }
 
-    // Método para reiniciar una cabina específica
     fun reiniciarCabina(cabinaId: Int) {
         val cabina = cabinas.getOrNull(cabinaId - 1)
             ?: throw IllegalArgumentException("ID de cabina no válido.")
         cabina.reiniciar()
     }
 
-    // Método para mostrar el consolidado total de todas las cabinas
     fun mostrarConsolidadoTotal(): String {
         var totalLlamadas = 0
         var totalMinutos = 0
         var totalCosto = 0
+
+        // StringBuilder para consolidar la información de todas las cabinas
+        val builder = StringBuilder()
 
         for (cabina in cabinas) {
             val (llamadas, minutos, costo) = cabina.obtenerResumen()
             totalLlamadas += llamadas
             totalMinutos += minutos
             totalCosto += costo
+
+            // Añadir información de cada cabina al builder
+            builder.append(cabina.mostrarInfo()).append("\n")
         }
 
         val costoPromedioPorMinuto = if (totalMinutos > 0) totalCosto / totalMinutos else 0
 
-        return """
+        // Añadir el resumen total al builder
+        builder.append("""
             |Consolidado Total:
             |Total de llamadas: $totalLlamadas
             |Total de minutos: $totalMinutos
             |Costo total: $totalCosto pesos
             |Costo promedio por minuto: $costoPromedioPorMinuto pesos/minuto
-        """.trimMargin()
+        """.trimMargin())
+
+        return builder.toString()
+    }
+
+    fun agregarCabina() {
+        val nuevaCabinaId = cabinas.size + 1
+        cabinas.add(Cabina(nuevaCabinaId))
+        println("Se ha agregado una nueva cabina con ID: $nuevaCabinaId")
     }
 }
