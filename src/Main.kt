@@ -1,5 +1,7 @@
+import kotlin.random.Random
+
 fun main() {
-    val control = GTelefonicos(1) // Ejemplo con 1 cabina inicial se van agregando en el menu de registro
+    val control = GTelefonicos(1) // Ejemplo con 1 cabina inicial
     var opcion: Int
 
     do {
@@ -24,14 +26,15 @@ fun main() {
             1 -> {
                 println("Ingrese el ID de la cabina:")
                 val cabinaId = readLine()?.toIntOrNull() ?: continue
-                println("Ingrese el tipo de llamada (Celular, local, Larga distancia):")
+                println("Ingrese el tipo de llamada (celular, local, larga distancia):")
                 val tipo = readLine()?.lowercase() ?: continue
-                println("Ingrese la duración de la llamada en minutos:")
-                val minutos = readLine()?.toIntOrNull() ?: continue
+
+                // Generar duración aleatoria de la llamada
+                val minutos = Random.nextInt(1, 61) // Duración entre 1 y 60 minutos
 
                 try {
                     control.registrarLlamada(cabinaId, tipo, minutos)
-                    println("Llamada registrada exitosamente.")
+                    println("Llamada registrada exitosamente con duración de $minutos minutos.")
                 } catch (e: IllegalArgumentException) {
                     println("Error: ${e.message}")
                 }
@@ -43,7 +46,7 @@ fun main() {
                 try {
                     println(control.mostrarInfoCabina(cabinaId))
                 } catch (e: IllegalArgumentException) {
-                    println("Error debe registrar${e.message}")
+                    println("Error: ${e.message}")
                 }
             }
             3 -> {

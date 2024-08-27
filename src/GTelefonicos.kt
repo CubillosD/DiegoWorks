@@ -45,13 +45,13 @@ class GTelefonicos(numCabinas: Int) {
             val totalCosto = calcularCostoTotal()
 
             return """
-               ╔══════════════════════════════════════╗
-               ║    Cabina $id:                       ║
-               ╠══════════════════════════════════════╣
-               ║ Total de llamadas: $totalLlamadas    ║
-               ║ Total de minutos: $totalMinutos      ║
-               ║ Costo total: $totalCosto pesos       ║
-               ╚══════════════════════════════════════╝
+                    ╔═════════════════════════════════╗
+                                 Cabina $id                     
+                    ╚═════════════════════════════════╝
+                        Total de llamadas: $totalLlamadas                 
+                        Total de minutos: $totalMinutos                  
+                        Costo total: $totalCosto pesos               
+                    ═══════════════════════════════════
                 
             """.trimMargin()
         }
@@ -119,11 +119,15 @@ class GTelefonicos(numCabinas: Int) {
 
         // Añadir el resumen total al builder
         builder.append("""
-            |Consolidado Total:
-            |Total de llamadas: $totalLlamadas
-            |Total de minutos: $totalMinutos
-            |Costo total: $totalCosto pesos
-            |Costo promedio por minuto: $costoPromedioPorMinuto pesos/minuto
+            
+                    ╔═════════════════════════════════╗
+                            Consolidado Total
+                    ╚═════════════════════════════════╝
+                        Total de llamadas: $totalLlamadas
+                        Total de minutos: $totalMinutos
+                        Costo total: $totalCosto pesos
+                        Costo promedio por minuto: $costoPromedioPorMinuto pesos/minuto
+                 ══════════════════════════════════════════
         """.trimMargin())
 
         return builder.toString()
