@@ -1,3 +1,5 @@
+package Cabinas
+
 import kotlin.random.Random
 
 fun main() {

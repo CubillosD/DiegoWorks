@@ -1,3 +1,5 @@
+package Cabinas
+
 class GTelefonicos(numCabinas: Int) {
     private val cabinas: MutableList<Cabina> = MutableList(numCabinas) { Cabina(it + 1) }
 

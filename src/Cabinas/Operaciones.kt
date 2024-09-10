@@ -1,4 +1,6 @@
-class Operaciones(var n1: Double ,var n2: Double) {
+package Cabinas
+
+class Operaciones(var n1: Double, var n2: Double) {
 
     fun suma() {
         var sum = n1 + n2
